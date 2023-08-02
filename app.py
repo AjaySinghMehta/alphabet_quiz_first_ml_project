@@ -21,7 +21,7 @@ app = Flask(__name__)
 app.secret_key = 'alphabet_quiz'
 
 def download_data_files():
-    base_url = 'https://raw.githubusercontent.com/your_username/your_repo/main/data/'
+    base_url = 'https://github.com/AjaySinghMehta/alphabet_quiz_ml_project/main/data/'
     labels_url = base_url + 'labels.npy'
     images_url = base_url + 'images.npy'
 
