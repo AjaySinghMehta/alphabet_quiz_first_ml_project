@@ -4,3 +4,4 @@ matplotlib==3.5.3
 numpy==1.21.6
 tensorflow==2.9.1
 tensorflow_gpu==2.10.0
+gunicorn==20.1.0
