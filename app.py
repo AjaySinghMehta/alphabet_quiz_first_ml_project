@@ -20,6 +20,18 @@ ENCODER = bidict({
 app = Flask(__name__)
 app.secret_key = 'alphabet_quiz'
 
+def download_data_files():
+    base_url = 'https://raw.githubusercontent.com/your_username/your_repo/main/data/'
+    labels_url = base_url + 'labels.npy'
+    images_url = base_url + 'images.npy'
+
+    labels_data = requests.get(labels_url).content
+    with open('data/labels.npy', 'wb') as labels_file:
+        labels_file.write(labels_data)
+
+    images_data = requests.get(images_url).content
+    with open('data/images.npy', 'wb') as images_file:
+        images_file.write(images_data)
 
 @app.route('/')
 def index():
