@@ -45,16 +45,16 @@ def add_data_get():
 def add_data_post():
 
     label = request.form['letter']
-    labels = np.load('G:\\projects\\python projects\\alphabet_quiz\\data\\labels.npy')
+    labels = np.load('data\\labels.npy')
     labels = np.append(labels, label)
-    np.save('G:\\projects\\python projects\\alphabet_quiz\\data\\labels.npy', labels)
+    np.save('data\\labels.npy', labels)
 
     pixels = request.form['pixels']
     pixels = pixels.split(',')
     img = np.array(pixels).astype(float).reshape(1, 50, 50)
-    imgs = np.load('G:\\projects\\python projects\\alphabet_quiz\\data\\images.npy')
+    imgs = np.load('data\\images.npy')
     imgs = np.vstack([imgs, img])
-    np.save('G:\\projects\\python projects\\alphabet_quiz\\data\\images.npy', imgs)
+    np.save('data\\images.npy', imgs)
 
     session['message'] = f'"{label}" added to the training dataset'
 
