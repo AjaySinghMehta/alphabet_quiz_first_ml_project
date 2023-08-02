@@ -6,7 +6,7 @@ from flask import (
 )
 from random import choice
 from tensorflow import keras
-
+import requests
 
 ENCODER = bidict({
     'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6,
@@ -15,7 +15,6 @@ ENCODER = bidict({
     'S': 19, 'T': 20, 'U': 21, 'V': 22, 'W': 23, 'X': 24,
     'Y': 25, 'Z': 26
 })
-
 
 app = Flask(__name__)
 app.secret_key = 'alphabet_quiz'
@@ -41,35 +40,24 @@ def index():
 @app.route('/add-data', methods=['GET'])
 def add_data_get():
     message = session.get('message', '')
-    
-    # labels = np.load('data/labels.npy')
-    # count = {k: 0 for k in ENCODER.keys()}
-    # for label in labels:
-    #     count[label] += 1
-    # count = sorted(count.items(), key=lambda x: x[1])
-    # letter = count[0][0]
-
     letter = choice(list(ENCODER.keys()))
-    
     return render_template("addData.html", letter=letter, message=message)
 
 @app.route('/add-data', methods=['POST'])
 def add_data_post():
-
     label = request.form['letter']
-    labels = np.load('data\\labels.npy')
+    labels = np.load('data/labels.npy')
     labels = np.append(labels, label)
-    np.save('data\\labels.npy', labels)
+    np.save('data/labels.npy', labels)
 
     pixels = request.form['pixels']
     pixels = pixels.split(',')
     img = np.array(pixels).astype(float).reshape(1, 50, 50)
-    imgs = np.load('data\\images.npy')
+    imgs = np.load('data/images.npy')
     imgs = np.vstack([imgs, img])
-    np.save('data\\images.npy', imgs)
+    np.save('data/images.npy', imgs)
 
     session['message'] = f'"{label}" added to the training dataset'
-
     return redirect(url_for('add_data_get'))
 
 @app.route('/practice', methods=['GET'])
@@ -100,6 +88,6 @@ def practice_post():
         print(e)
         return render_template('error.html')
 
-
 if __name__ == '__main__':
+    download_data_files()
     app.run(debug=True)
